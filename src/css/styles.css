@@ -1,0 +1,391 @@
+/* ========================================
+   RESET Y VARIABLES
+   ======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --ink: #0f0e0c;
+  --paper: #f5f0e8;
+  --mist: #e8e1d4;
+  --slate: #6b6558;
+  --fog: #b8b0a4;
+  --accent: #2d4a3e;
+  --warm: #8b3a2a;
+  --gold: #c9923a;
+  --sky: #3a5a7a;
+}
+
+/* ========================================
+   BASE
+   ======================================== */
+html, body {
+  height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Mono', monospace;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 1.5rem 4rem;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(45,74,62,0.08) 0%, transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(0,0,0,0.04) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,0,0,0.03) 40px);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+.masthead {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.masthead::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 40px;
+  background: var(--fog);
+  margin: 0 auto 1.5rem;
+}
+
+.site-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.site-name em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.tagline {
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-top: 0.6rem;
+}
+
+/* ========================================
+   PANEL PRINCIPAL
+   ======================================== */
+.station-panel {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* ========================================
+   CONTROLES
+   ======================================== */
+.controls-row {
+  display: flex;
+  gap: 0;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  position: relative;
+}
+
+.controls-row::before {
+  content: 'ESTACIÓN';
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  background: var(--paper);
+  padding: 0 6px;
+  color: var(--slate);
+}
+
+/* Select personalizado */
+select {
+  flex: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  border-right: 1.5px solid var(--ink);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  padding: 0.9rem 2.5rem 0.9rem 1.1rem;
+  cursor: pointer;
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230f0e0c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 14px) 50%;
+  min-width: 0;
+}
+
+select:focus {
+  background-color: rgba(45,74,62,0.05);
+}
+
+/* Botón */
+#get-weather-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  padding: 0.9rem 1.5rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#get-weather-btn:hover {
+  background: var(--accent);
+}
+
+#get-weather-btn:active {
+  background: var(--warm);
+}
+
+#get-weather-btn.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ========================================
+   DIVISOR
+   ======================================== */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0 2rem;
+  color: var(--fog);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--mist);
+}
+
+/* ========================================
+   DISPLAY DEL CLIMA
+   ======================================== */
+#weather-display {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+#weather-display.visible {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   HEADER DEL CLIMA
+   ======================================== */
+.weather-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1.5px solid var(--ink);
+  padding: 1.4rem 1.5rem 1.2rem;
+  position: relative;
+  margin-bottom: -1.5px;
+}
+
+.weather-header::before {
+  content: 'REPORTE METEOROLÓGICO';
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  background: var(--paper);
+  padding: 0 6px;
+  color: var(--slate);
+}
+
+#location {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.4rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+#weather-main {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-top: 0.4rem;
+}
+
+/* ========================================
+   ICONO Y TEMPERATURA
+   ======================================== */
+.icon-temp {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+#weather-icon {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  filter: grayscale(30%) contrast(1.1);
+}
+
+#main-temperature {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.6rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+/* ========================================
+   GRID DE MÉTRICAS
+   ======================================== */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1.5px solid var(--ink);
+}
+
+.metric {
+  padding: 1.1rem 1.4rem;
+  border-right: 1.5px solid var(--ink);
+  border-bottom: 1.5px solid var(--ink);
+  position: relative;
+}
+
+.metric:nth-child(2n) {
+  border-right: none;
+}
+
+.metric:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.metric-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-bottom: 0.4rem;
+}
+
+.metric-value {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--ink);
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.footer-line {
+  border: 1.5px solid var(--ink);
+  border-top: none;
+  padding: 0.6rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timestamp {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  color: var(--fog);
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+/* ========================================
+   SPINNER
+   ======================================== */
+.spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--mist);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.loading .spinner {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   MENSAJE DE ERROR
+   ======================================== */
+.error-msg {
+  display: none;
+  border: 1.5px solid var(--warm);
+  padding: 1rem 1.4rem;
+  color: var(--warm);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  margin-top: 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-msg.visible {
+  display: block;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+@media (max-width: 480px) {
+  #main-temperature {
+    font-size: 2rem;
+  }
+  
+  #location {
+    font-size: 1.9rem;
+  }
+}

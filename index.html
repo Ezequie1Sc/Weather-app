@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atmósfera — App del Tiempo</title>
+  
+  <!-- Fuentes de Google -->
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="src/css/styles.css">
+</head>
+<body>
+
+  <header class="masthead">
+    <h1 class="site-name"><em>Atmós</em>fera</h1>
+    <p class="tagline">Servicio de información meteorológica</p>
+  </header>
+
+  <main class="station-panel">
+    <!-- Selector de ciudad -->
+    <div class="controls-row">
+      <select id="city-select" aria-label="Selecciona una ciudad">
+        <option value="">— Selecciona una ciudad —</option>
+        <option value="paris">París</option>
+        <option value="london">Londres</option>
+        <option value="tokyo">Tokio</option>
+        <option value="los angeles">Los Ángeles</option>
+        <option value="chicago">Chicago</option>
+        <option value="new york">Nueva York</option>
+      </select>
+      
+      <button id="get-weather-btn">
+        Obtener clima
+        <span class="spinner"></span>
+      </button>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div id="error-banner" class="error-msg" role="alert"></div>
+
+    <!-- Panel del clima -->
+    <div id="weather-display" aria-live="polite">
+      <div class="divider">observaciones</div>
+
+      <div class="weather-header">
+        <div class="location-block">
+          <div id="location">—</div>
+          <div id="weather-main"></div>
+        </div>
+        
+        <div class="icon-temp">
+          <img id="weather-icon" src="" alt="Ícono del clima" width="52" height="52" style="display:none;">
+          <div id="main-temperature">—</div>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric">
+          <div class="metric-label">Sensación térmica</div>
+          <div class="metric-value" id="feels-like">—</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">Humedad</div>
+          <div class="metric-value" id="humidity">—</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">Viento</div>
+          <div class="metric-value" id="wind">—</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">Ráfaga</div>
+          <div class="metric-value" id="wind-gust">—</div>
+        </div>
+      </div>
+
+      <div class="footer-line">
+        <span class="timestamp" id="fetch-time"></span>
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script src="src/js/script.js"></script>
+</body>
+</html>
