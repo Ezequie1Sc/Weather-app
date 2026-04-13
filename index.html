@@ -3,83 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atmósfera — App del Tiempo</title>
+  <meta name="description" content="Atmósfera - Mini SaaS meteorológico profesional. Busca, consulta y guarda tus ciudades favoritas">
+  <meta name="theme-color" content="#f5f0e8">
+  <meta property="og:title" content="Atmósfera — App del Tiempo">
+  <meta property="og:description" content="Clima global en tiempo real con búsqueda y favoritos">
   
-  <!-- Fuentes de Google -->
+  <title>🌤️ Atmósfera — Clima Global</title>
+  
+  <!-- Fuentes -->
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   
-  <!-- Estilos CSS -->
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Weather Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+  
+  <!-- Estilos -->
   <link rel="stylesheet" href="src/css/styles.css">
 </head>
 <body>
 
   <header class="masthead">
     <h1 class="site-name"><em>Atmós</em>fera</h1>
-    <p class="tagline">Servicio de información meteorológica</p>
+    <p class="tagline">Servicio de información meteorológica global</p>
   </header>
 
   <main class="station-panel">
-    <!-- Selector de ciudad -->
-    <div class="controls-row">
-      <select id="city-select" aria-label="Selecciona una ciudad">
-        <option value="">— Selecciona una ciudad —</option>
-        <option value="paris">París</option>
-        <option value="london">Londres</option>
-        <option value="tokyo">Tokio</option>
-        <option value="los angeles">Los Ángeles</option>
-        <option value="chicago">Chicago</option>
-        <option value="new york">Nueva York</option>
-      </select>
+    
+    <!-- 🔎 SECCIÓN DE BÚSQUEDA -->
+    <div class="search-section">
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input 
+            type="text" 
+            id="city-search" 
+            class="search-input" 
+            placeholder="Buscar ciudad... (ej: Tokyo, Madrid, Buenos Aires)"
+            aria-label="Buscar ciudad"
+            autocomplete="off"
+          >
+        </div>
+        <button id="search-btn" class="search-btn" aria-label="Buscar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Buscar</span>
+        </button>
+      </div>
       
-      <button id="get-weather-btn">
-        Obtener clima
-        <span class="spinner"></span>
-      </button>
+      <!-- Sugerencias de búsqueda con banderas -->
+      <div id="search-suggestions" class="search-suggestions"></div>
+    </div>
+
+    <!-- ⭐ SECCIÓN DE FAVORITOS -->
+    <div id="favorites-section" class="favorites-section">
+      <div class="favorites-header">
+        <h3><i class="fa-solid fa-star"></i> Ciudades favoritas</h3>
+        <span class="favorites-count" id="favorites-count">0</span>
+      </div>
+      <div id="favorites-list" class="favorites-list">
+        <!-- Las ciudades favoritas se renderizan aquí dinámicamente -->
+      </div>
     </div>
 
     <!-- Mensaje de error -->
     <div id="error-banner" class="error-msg" role="alert"></div>
 
-    <!-- Panel del clima -->
+    <!-- Panel del clima actual -->
     <div id="weather-display" aria-live="polite">
-      <div class="divider">observaciones</div>
+      <div class="divider">
+        <span>observaciones actuales</span>
+        <button id="favorite-toggle" class="favorite-toggle" aria-label="Añadir a favoritos">
+          <i class="fa-regular fa-star"></i>
+        </button>
+      </div>
 
       <div class="weather-header">
         <div class="location-block">
-          <div id="location">—</div>
-          <div id="weather-main"></div>
+          <div class="location-wrapper">
+            <span id="country-flag" class="country-flag"></span>
+            <span id="location">—</span>
+          </div>
+          <div id="weather-main" class="weather-condition">
+            <i class="wi wi-na"></i>
+            <span>—</span>
+          </div>
+          <div id="country-info" class="country-info"></div>
         </div>
         
         <div class="icon-temp">
-          <img id="weather-icon" src="" alt="Ícono del clima" width="52" height="52" style="display:none;">
+          <div class="weather-icon-wrapper">
+            <i id="weather-icon" class="wi wi-na"></i>
+          </div>
           <div id="main-temperature">—</div>
         </div>
       </div>
 
       <div class="metrics-grid">
         <div class="metric">
-          <div class="metric-label">Sensación térmica</div>
+          <div class="metric-label">
+            <i class="fa-solid fa-temperature-low"></i>
+            <span>Sensación térmica</span>
+          </div>
           <div class="metric-value" id="feels-like">—</div>
         </div>
         
         <div class="metric">
-          <div class="metric-label">Humedad</div>
+          <div class="metric-label">
+            <i class="fa-solid fa-droplet"></i>
+            <span>Humedad</span>
+          </div>
           <div class="metric-value" id="humidity">—</div>
         </div>
         
         <div class="metric">
-          <div class="metric-label">Viento</div>
+          <div class="metric-label">
+            <i class="fa-solid fa-wind"></i>
+            <span>Viento</span>
+          </div>
           <div class="metric-value" id="wind">—</div>
         </div>
         
         <div class="metric">
-          <div class="metric-label">Ráfaga</div>
+          <div class="metric-label">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Ráfagas</span>
+          </div>
           <div class="metric-value" id="wind-gust">—</div>
         </div>
+        
+        <div class="metric">
+          <div class="metric-label">
+            <i class="fa-solid fa-compress"></i>
+            <span>Presión</span>
+          </div>
+          <div class="metric-value" id="pressure">—</div>
+        </div>
+        
+        <div class="metric">
+          <div class="metric-label">
+            <i class="fa-solid fa-eye"></i>
+            <span>Visibilidad</span>
+          </div>
+          <div class="metric-value" id="visibility">—</div>
+        </div>
+      </div>
+
+      <!-- Previsión 5 días -->
+      <div class="divider">previsión 5 días</div>
+      <div id="forecast-container" class="forecast-container">
+        <!-- Renderizado dinámico -->
       </div>
 
       <div class="footer-line">
         <span class="timestamp" id="fetch-time"></span>
+        <span class="data-source">
+          <i class="fa-solid fa-database"></i> Open-Meteo
+        </span>
       </div>
     </div>
   </main>
