@@ -1,8 +1,8 @@
-# 🌤️ Atmósfera - App del Tiempo
+#  Atmósfera - App del Tiempo
 
 Aplicación meteorológica elegante y minimalista que muestra información del clima en tiempo real para diferentes ciudades del mundo.
 
-## 🚀 Características
+## Características
 
 - Selector de 6 ciudades principales
 - Visualización de temperatura actual
